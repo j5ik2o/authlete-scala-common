@@ -23,12 +23,12 @@ class AuthleteApiAsync(underlying: AuthleteApi) {
     underlying.authorizationFail(request)
   }
 
-  def getServiceJwks(implicit ec: ExecutionContext): Future[String] = Future {
-    underlying.getServiceJwks
+  def getServiceJwks(implicit ec: ExecutionContext): Future[Option[String]] = Future {
+    Option(underlying.getServiceJwks)
   }
 
-  def getServiceJwks(pretty: Boolean, includePrivateKeys: Boolean)(implicit ec: ExecutionContext): Future[String] = Future {
-    underlying.getServiceJwks(pretty, includePrivateKeys)
+  def getServiceJwks(pretty: Boolean, includePrivateKeys: Boolean)(implicit ec: ExecutionContext): Future[Option[String]] = Future {
+    Option(underlying.getServiceJwks(pretty, includePrivateKeys))
   }
 
   def token(request: TokenRequest)(implicit ec: ExecutionContext): Future[TokenResponse] = Future {
