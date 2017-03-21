@@ -1,149 +1,95 @@
 package com.github.j5ik2o.authlete.scala.common.api
 
-import com.authlete.common.api.AuthleteApi
+import com.authlete.common.api.{ AuthleteApi, AuthleteApiFactory }
+import com.authlete.common.conf.AuthleteConfiguration
 import com.authlete.common.dto._
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-class AuthleteApiAsync(underlying: AuthleteApi) {
+trait AuthleteApiAsync {
 
-  def introspection(request: IntrospectionRequest)(implicit ec: ExecutionContext): Future[IntrospectionResponse] = Future {
-    underlying.introspection(request)
-  }
+  def introspection(request: IntrospectionRequest)(implicit ec: ExecutionContext): Future[IntrospectionResponse]
 
-  def userinfoIssue(request: UserInfoIssueRequest)(implicit ec: ExecutionContext): Future[UserInfoIssueResponse] = Future {
-    underlying.userinfoIssue(request)
-  }
+  def userinfoIssue(request: UserInfoIssueRequest)(implicit ec: ExecutionContext): Future[UserInfoIssueResponse]
 
-  def authorizationIssue(request: AuthorizationIssueRequest)(implicit ec: ExecutionContext): Future[AuthorizationIssueResponse] = Future {
-    underlying.authorizationIssue(request)
-  }
+  def authorizationIssue(request: AuthorizationIssueRequest)(implicit ec: ExecutionContext): Future[AuthorizationIssueResponse]
 
-  def authorizationFail(request: AuthorizationFailRequest)(implicit ec: ExecutionContext): Future[AuthorizationFailResponse] = Future {
-    underlying.authorizationFail(request)
-  }
+  def authorizationFail(request: AuthorizationFailRequest)(implicit ec: ExecutionContext): Future[AuthorizationFailResponse]
 
-  def getServiceJwks(implicit ec: ExecutionContext): Future[Option[String]] = Future {
-    Option(underlying.getServiceJwks)
-  }
+  def getServiceJwks(implicit ec: ExecutionContext): Future[Option[String]]
 
-  def getServiceJwks(pretty: Boolean, includePrivateKeys: Boolean)(implicit ec: ExecutionContext): Future[Option[String]] = Future {
-    Option(underlying.getServiceJwks(pretty, includePrivateKeys))
-  }
+  def getServiceJwks(pretty: Boolean, includePrivateKeys: Boolean)(implicit ec: ExecutionContext): Future[Option[String]]
 
-  def token(request: TokenRequest)(implicit ec: ExecutionContext): Future[TokenResponse] = Future {
-    underlying.token(request)
-  }
+  def token(request: TokenRequest)(implicit ec: ExecutionContext): Future[TokenResponse]
 
-  def getGrantedScopes(clientId: Long, subject: String)(implicit ec: ExecutionContext): Future[GrantedScopesGetResponse] = Future {
-    underlying.getGrantedScopes(clientId, subject)
-  }
+  def getGrantedScopes(clientId: Long, subject: String)(implicit ec: ExecutionContext): Future[GrantedScopesGetResponse]
 
-  def deleteService(apiKey: Long)(implicit ec: ExecutionContext): Future[Unit] = Future {
-    underlying.deleteService(apiKey)
-  }
+  def deleteService(apiKey: Long)(implicit ec: ExecutionContext): Future[Unit]
 
-  def tokenCreate(request: TokenCreateRequest)(implicit ec: ExecutionContext): Future[TokenCreateResponse] = Future {
-    underlying.tokenCreate(request)
-  }
+  def tokenCreate(request: TokenCreateRequest)(implicit ec: ExecutionContext): Future[TokenCreateResponse]
 
-  def createServie(service: Service)(implicit ec: ExecutionContext): Future[Service] = Future {
-    underlying.createServie(service)
-  }
+  def createServie(service: Service)(implicit ec: ExecutionContext): Future[Service]
 
-  def userinfo(request: UserInfoRequest)(implicit ec: ExecutionContext): Future[UserInfoResponse] = Future {
-    underlying.userinfo(request)
-  }
+  def userinfo(request: UserInfoRequest)(implicit ec: ExecutionContext): Future[UserInfoResponse]
 
-  def getService(apiKey: Long)(implicit ec: ExecutionContext): Future[Service] = Future {
-    underlying.getService(apiKey)
-  }
+  def getService(apiKey: Long)(implicit ec: ExecutionContext): Future[Service]
 
-  def getClient(clientId: Long)(implicit ec: ExecutionContext): Future[Client] = Future {
-    underlying.getClient(clientId)
-  }
+  def getClient(clientId: Long)(implicit ec: ExecutionContext): Future[Client]
 
-  def updateClient(client: Client)(implicit ec: ExecutionContext): Future[Client] = Future {
-    underlying.updateClient(client)
-  }
+  def updateClient(client: Client)(implicit ec: ExecutionContext): Future[Client]
 
-  def revocation(request: RevocationRequest)(implicit ec: ExecutionContext): Future[RevocationResponse] = Future {
-    underlying.revocation(request)
-  }
+  def revocation(request: RevocationRequest)(implicit ec: ExecutionContext): Future[RevocationResponse]
 
-  def deleteClient(clientId: Long)(implicit ec: ExecutionContext): Future[Unit] = Future {
-    underlying.deleteClient(clientId)
-  }
+  def deleteClient(clientId: Long)(implicit ec: ExecutionContext): Future[Unit]
 
-  def getServiceList(implicit ec: ExecutionContext): Future[ServiceListResponse] = Future {
-    underlying.getServiceList()
-  }
+  def getServiceList(implicit ec: ExecutionContext): Future[ServiceListResponse]
 
-  def getServiceList(start: Int, end: Int)(implicit ec: ExecutionContext): Future[ServiceListResponse] = Future {
-    underlying.getServiceList(start, end)
-  }
+  def getServiceList(start: Int, end: Int)(implicit ec: ExecutionContext): Future[ServiceListResponse]
 
-  def getServiceConfiguration(implicit ec: ExecutionContext): Future[String] = Future {
-    underlying.getServiceConfiguration
-  }
+  def getServiceConfiguration(implicit ec: ExecutionContext): Future[String]
 
-  def getServiceConfiguration(pretty: Boolean)(implicit ec: ExecutionContext): Future[String] = Future {
-    underlying.getServiceConfiguration(pretty)
-  }
+  def getServiceConfiguration(pretty: Boolean)(implicit ec: ExecutionContext): Future[String]
 
-  def tokenFail(request: TokenFailRequest)(implicit ec: ExecutionContext): Future[TokenFailResponse] = Future {
-    underlying.tokenFail(request)
-  }
+  def tokenFail(request: TokenFailRequest)(implicit ec: ExecutionContext): Future[TokenFailResponse]
 
-  def authorization(request: AuthorizationRequest)(implicit ec: ExecutionContext): Future[AuthorizationResponse] = Future {
-    underlying.authorization(request)
-  }
+  def authorization(request: AuthorizationRequest)(implicit ec: ExecutionContext): Future[AuthorizationResponse]
 
-  def tokenUpdate(request: TokenUpdateRequest)(implicit ec: ExecutionContext): Future[TokenUpdateResponse] = Future {
-    underlying.tokenUpdate(request)
-  }
+  def tokenUpdate(request: TokenUpdateRequest)(implicit ec: ExecutionContext): Future[TokenUpdateResponse]
 
-  def setRequestableScopes(clientId: Long, scopes: Array[String])(implicit ec: ExecutionContext): Future[Array[String]] = Future {
-    underlying.setRequestableScopes(clientId, scopes)
-  }
+  def setRequestableScopes(clientId: Long, scopes: Array[String])(implicit ec: ExecutionContext): Future[Array[String]]
 
-  def getRequestableScopes(clientId: Long)(implicit ec: ExecutionContext): Future[Array[String]] = Future {
-    underlying.getRequestableScopes(clientId)
-  }
+  def getRequestableScopes(clientId: Long)(implicit ec: ExecutionContext): Future[Array[String]]
 
-  def createClient(client: Client)(implicit ec: ExecutionContext): Future[Client] = Future {
-    underlying.createClient(client)
-  }
+  def createClient(client: Client)(implicit ec: ExecutionContext): Future[Client]
 
-  def updateService(service: Service)(implicit ec: ExecutionContext): Future[Service] = Future {
-    underlying.updateService(service)
-  }
+  def updateService(service: Service)(implicit ec: ExecutionContext): Future[Service]
 
-  def getClientList(implicit ec: ExecutionContext): Future[ClientListResponse] = Future {
-    underlying.getClientList
-  }
+  def getClientList(implicit ec: ExecutionContext): Future[ClientListResponse]
 
-  def getClientList(developer: String)(implicit ec: ExecutionContext): Future[ClientListResponse] = Future {
-    underlying.getClientList(developer)
-  }
+  def getClientList(developer: String)(implicit ec: ExecutionContext): Future[ClientListResponse]
 
-  def getClientList(start: Int, end: Int)(implicit ec: ExecutionContext): Future[ClientListResponse] = Future {
-    underlying.getClientList(start, end)
-  }
+  def getClientList(start: Int, end: Int)(implicit ec: ExecutionContext): Future[ClientListResponse]
 
-  def getClientList(developer: String, start: Int, end: Int)(implicit ec: ExecutionContext): Future[ClientListResponse] = Future {
-    underlying.getClientList(developer, start, end)
-  }
+  def getClientList(developer: String, start: Int, end: Int)(implicit ec: ExecutionContext): Future[ClientListResponse]
 
-  def tokenIssue(request: TokenIssueRequest)(implicit ec: ExecutionContext): Future[TokenIssueResponse] = Future {
-    underlying.tokenIssue(request)
-  }
+  def tokenIssue(request: TokenIssueRequest)(implicit ec: ExecutionContext): Future[TokenIssueResponse]
 
-  def deleteGrantedScopes(clientId: Long, subject: String)(implicit ec: ExecutionContext): Future[Unit] = Future {
-    underlying.deleteGrantedScopes(clientId, subject)
-  }
+  def deleteGrantedScopes(clientId: Long, subject: String)(implicit ec: ExecutionContext): Future[Unit]
 
-  def deleteRequestableScopes(clientId: Long)(implicit ec: ExecutionContext): Future[Unit] = Future {
-    underlying.deleteRequestableScopes(clientId)
-  }
+  def deleteRequestableScopes(clientId: Long)(implicit ec: ExecutionContext): Future[Unit]
+
+}
+
+object AuthleteApiAsync {
+
+  def ofDefault: AuthleteApiAsync = create(AuthleteApiFactory.getDefaultApi)
+
+  def create(configuration: AuthleteConfiguration): AuthleteApiAsync =
+    create(AuthleteApiFactory.create(configuration))
+
+  def create(configuration: AuthleteConfiguration, className: String): AuthleteApiAsync =
+    create(AuthleteApiFactory.create(configuration, className))
+
+  def create(authleteApi: AuthleteApi) = new AuthleteApiAsyncImpl(authleteApi)
+
 }
